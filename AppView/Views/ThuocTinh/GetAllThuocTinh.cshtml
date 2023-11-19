@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AppData.Models.ThuocTinh>
+
+@{
+    ViewData["Title"] = "GetAllThuocTinh";
+    Layout = "~/Views/Shared/_LayoutforAdmin.cshtml";
+    int stt = 1;
+}
+
+<h1>GetAllThuocTinh</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayTao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThai)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @stt
+                    @{
+                        stt++;
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayTao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThai)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Update", new { id=item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                    @Html.ActionLink("Delete", "Deletes", new { id=item.ID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

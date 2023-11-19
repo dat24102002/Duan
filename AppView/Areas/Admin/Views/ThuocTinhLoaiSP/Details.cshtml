@@ -1,0 +1,63 @@
+﻿@model AppData.Models.ThuocTinhLoaiSP
+
+@{
+    ViewData["Title"] = "Details";
+    AppData.Models.AssignmentDBContext dBContext = new AppData.Models.AssignmentDBContext();
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ThuocTinhLoaiSP</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            Ten Thuoc Tinh
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+
+                var ThuocTinh = dBContext.ThuocTinhs.Find(Model.IDThuocTinh);
+                if (ThuocTinh != null)
+                {
+                    <div>
+                        <strong style="color:blue;">
+                            <span>
+                                @ThuocTinh.Ten
+                            </span>
+                        </strong>
+                    </div>
+                }
+            }
+        </dd>
+        <dt class = "col-sm-2">
+           Ten LoaiSP
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                
+                var LoaiSP = dBContext.LoaiSPs.Find(Model.IDLoaiSP);
+                if (LoaiSP != null)
+                {
+                    <div>
+                        <strong style="color:red;">
+                            <span>
+                                @LoaiSP.Ten
+                            </span>
+                        </strong>
+                    </div>
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Update", new { id=Model.ID }) |
+    <a asp-action="Index">Back to List</a>
+</div>

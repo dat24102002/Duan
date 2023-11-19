@@ -1,0 +1,116 @@
+﻿@using AppData.Models;
+@model AppView.Models.AllSanPhamBienTheViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutforAdmin.cshtml";
+    ViewData["Title"] = "Create";
+    List<GiaTri> giaTris = ViewBag.GiaTri;
+    List<BienThe> bienThes = ViewBag.BienThe;
+    List<SanPham> sanPhams = ViewBag.SanPham;
+    List<ThuocTinh> thuocTinhs = ViewBag.ThuocTinh;
+    List<LoaiSP> loaiSPs = ViewBag.LoaiSP;
+    List<ChiTietBienThe> chiTietBienThes = ViewBag.CTBienThe;
+    
+    
+}
+
+<h1>Tạo sản phẩm</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data" class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-5">
+                <div class="form-group">
+                    <lable>Ten LoaiSP</lable>
+                    <div>
+                        <select class="form-control" name="IDLoaiSP">
+                            @foreach (var loaisp in loaiSPs)
+                            {
+                                <option value="@loaisp.ID">@loaisp.Ten</option>
+                            }
+                        </select>
+                        <a asp-controller="LoaiSP" asp-action="Create">Thêm loại sản phẩm</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <br />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Tên sản phẩm</label>
+                    <input asp-for="Ten" class="form-control" />
+                    <span asp-validation-for="Ten" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Mô Tả</label>
+                    <input asp-for="MoTa" class="form-control" />
+                    <span asp-validation-for="MoTa" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SoLuong" class="control-label"></label>
+                    <input asp-for="SoLuong" class="form-control" />
+                    <span asp-validation-for="SoLuong" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GiaBan" class="control-label"></label>
+                    <input asp-for="GiaBan" class="form-control" />
+                    <span asp-validation-for="GiaBan" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NgayTao" class="control-label"></label>
+                    <input asp-for="NgayTao" class="form-control" />
+                    <span asp-validation-for="NgayTao" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Anh" class="control-label"></label>
+                    <input type="file" name="Anh" accept="image/*" />
+                    <span asp-validation-for="Anh" class="text-danger"></span>
+                </div>
+                
+            </div>
+            
+            <div class ="col-4">
+                <lable>Thuộc tính sản phẩm</lable>
+                
+                @foreach (var item in thuocTinhs)
+                {
+                    <div class="form-group">
+                        <lable>@item.Ten</lable>
+                        <div>
+                            
+                            <select class="form-control" name="IDGiaTri">
+                                @foreach (var gt in giaTris.FindAll(p => p.IdThuocTinh == item.ID))
+                                {
+                                    <option value="@gt.ID">@gt.Ten</option>
+
+                                }
+                            </select>
+                            <a asp-controller="GiaTri" asp-action="Create">Thêm giá trị cho thuộc tính</a>
+                        </div>
+                    </div>
+                   
+
+                }
+                <a asp-controller="ThuocTinh" asp-action="Create" style="color:red">Thêm thuộc tính</a>
+                <div class="form-group">
+                    <br />
+                </div>
+            </div>
+            
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

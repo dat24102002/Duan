@@ -1,0 +1,54 @@
+﻿@using AppData.Models;
+@model IEnumerable<AppData.Models.GiaTri>
+
+@{
+    Layout = "~/Views/Shared/_LayoutforAdmin.cshtml";
+    ViewData["Title"] = "GetAllGiaTri";
+    List<ThuocTinh> thuocTinhs = ViewBag.ThuocTinh;
+    int stt = 1;
+}
+
+<h1>GetAllGiaTri</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten)
+            </th>
+            <th>
+                Tên thuộc tính
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @stt
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+            <td>
+                @thuocTinhs.FirstOrDefault(p=>p.ID == item.IdThuocTinh).Ten
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.ID  }) |
+                
+                @Html.ActionLink("Delete", "Deletes", new {  id=item.ID  })
+            </td>
+            @{
+                stt++;
+            }
+        </tr>
+}
+    </tbody>
+</table>

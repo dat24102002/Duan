@@ -1,0 +1,100 @@
+﻿@using AppData.Models;
+@model IEnumerable<AppData.Models.BienThe>
+
+@{
+    Layout = "~/Views/Shared/_LayoutforAdmin.cshtml";
+    ViewData["Title"] = "GetAllChiTietBienThe";
+    List<GiaTri> giaTris = ViewBag.GiaTri;
+    List<BienThe> bienThes = ViewBag.BienThe;
+    List<SanPham> sanPhams = ViewBag.SanPham;
+    List<ThuocTinh> thuocTinhs = ViewBag.ThuocTinh;
+    List<LoaiSP> loaiSPs = ViewBag.LoaiSP;
+    List<ChiTietBienThe> chiTietBienThes = ViewBag.CTBienThe;
+    int stt = 1; 
+    List<string> imageExtensions = new List<string>()
+    {
+         ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf",".webp"
+    };
+}
+
+<h1>Sản phẩm</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Loại sản phẩm
+            </th>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Giá bán
+            </th>
+            <th>
+                Ngày tạo 
+            </th>
+            <th>
+                Ảnh
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @stt
+            </td>
+            <td>
+                @loaiSPs.FirstOrDefault(p=>p.ID == sanPhams.FirstOrDefault(p=>p.ID == item.IDSanPham).IDLoaiSP).Ten
+            </td>
+            <td>
+                @sanPhams.FirstOrDefault(p=>p.ID == item.IDSanPham).Ten
+            </td>
+            <td>
+                @item.SoLuong 
+            </td>
+            <td>
+                    @item.GiaBan
+            </td>
+            <td>
+                    @item.NgayTao
+            </td>
+            <td>
+                @{
+                        string extension = System.IO.Path.GetExtension(item.Anh);
+                }
+                @{
+                    if (imageExtensions.Contains(extension.Trim()))
+                    {
+                            <img src="~/img/@item.Anh" style="width: 150px;height:150px" />
+                    }
+                    else
+                    {
+                        <img src="~/img/product-2.jpg" height="100px">
+                    }
+                }
+            </td>
+        
+            <td>
+                @{
+                    stt++;
+                }
+                @Html.ActionLink("Edit", "Edit", new {  id=item.ID  }) |
+                
+                @Html.ActionLink("Delete", "Deletes", new {  id=item.ID  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

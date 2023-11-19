@@ -1,0 +1,74 @@
+﻿@model IEnumerable<AppData.Models.ThuocTinhLoaiSP>
+
+@{
+    ViewData["Title"] = "GetAllThuocTinhLoaiSP";
+    AppData.Models.AssignmentDBContext dBContext = new AppData.Models.AssignmentDBContext();
+}
+
+<h1>GetAllThuocTinhLoaiSP</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                Ten Thuoc Tinh
+            </th>
+            <th>
+               Ten LoaiSP
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                    @{
+
+                        var thuoctinh = dBContext.ThuocTinhs.Find(item.IDThuocTinh);
+                        if (thuoctinh != null)
+                        {
+                            <div>
+                                <strong style="color:blue;">
+                                    <span>
+                                        @thuoctinh.Ten
+                                    </span>
+                                </strong>
+                            </div>
+                        }
+                    }
+            </td>
+            <td>
+                    @{
+                       
+                        var LoaiSP = dBContext.LoaiSPs.Find(item.IDLoaiSP);
+                        if (LoaiSP != null)
+                        {
+                            <div>
+                                <strong style="color:red;">
+                                    <span>
+                                        @LoaiSP.Ten
+                                    </span>
+                                </strong>
+                            </div>
+                        }
+                    }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Update", new { id=item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id=item.ID}) |
+                    @Html.ActionLink("Delete", "Deletes", new { id=item.ID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

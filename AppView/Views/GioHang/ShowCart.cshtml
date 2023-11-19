@@ -1,0 +1,116 @@
+﻿@model IEnumerable<AppData.Models.ChiTietGioHang>
+@using AppData.Models
+
+@{
+    ViewData["Title"] = "ShowCart";
+    var listbt = ViewData["listBienThe"] as List<BienThe>;
+    var listSP = ViewData["listSP"] as List<SanPham>;
+    long tongTien = 0;
+    int tongSL = 0;
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href="#">Home</a>
+                        <a href="#">Shop</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                if (listbt != null)
+                                {
+                                    BienThe bthe = listbt.Where(c => c.ID.Equals(item.IDBienThe)).FirstOrDefault();
+                                SanPham spham = listSP.Where(c => c.ID.Equals(bthe.IDSanPham)).FirstOrDefault();
+                                    var thanhtien = item.SoLuong * bthe.GiaBan;
+                                    tongTien += thanhtien;
+                                    <tr>
+                                        @using (Html.BeginForm("Update_Quantity", "GioHang"))
+                                        {
+                                            <td class="product__cart__item">
+                                                <div>
+                                                    <img src="/img/@bthe.Anh" style="width:30%;height: 30%; float:left">
+                                                </div>
+                                                <div class="product__cart__item__text" >
+                                                    <h6>@spham.Ten</h6>
+                                                    <h5>@bthe.GiaBan.ToString("n0") VND</h5>
+                                                </div>
+                                            </td>
+                                            <td class="quantity__item">
+                                                <div class="quantity">
+                                                    <input type="hidden" value="@item.IDBienThe" name="ID_product" />
+                                                    <input type="number" min="0" step="1" value="@item.SoLuong" name="Quantity" style=" width:100px;font-weight:600; text-align:center" />
+                                                </div>
+                                                <input type="submit" value="Update" style=" width:100px;margin-top:10px;background-color:#0000" />
+                                            </td>
+                                        }
+                                        <td class="cart__price">@thanhtien.ToString("n0") VND</td>
+                                        <td class="cart__close">
+                                            <a href="~/GioHang/RemoveCartItem/@bthe.ID" class="cart__close"><i class="fa fa-close"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="/Home/AllProduct">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn update__btn">
+                            <a href="~/GioHang/RemoveAll"><i class="fa fa-spinner"></i> REMOVE ALL</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span>@tongTien.ToString("n0") VND</span></li>
+                        <li>Total <span>@tongTien.ToString("n0") VND</span></li>
+                    </ul>
+                    <a class="primary-btn" asp-controller="Home" asp-action="CheckOut" asp-route-tongtien="@tongTien">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
